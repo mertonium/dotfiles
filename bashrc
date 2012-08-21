@@ -1,18 +1,19 @@
 export INPUTRC="~/.inputrc"
 export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home"
-export PATH="$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:~/bin"
+export PATH="$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:/usr/local/sbin:~/bin"
 export MANPATH="$MANPATH:/opt/local/man:/usr/local/mysql/man"
 export EDITOR=`which vim`
 # Whenever displaying the prompt, write the previous line to disk.
 export PROMPT_COMMAND="history -a"
-export CC="/usr/bin/gcc"
+export CC="/Applications/Xcode.app/Contents/Developer/usr/bin/gcc"
 
 # Setup Amazon EC2 Command-Line Tools
-#export EC2_HOME=~/.ec2
-#export PATH=$PATH:$EC2_HOME/bin
-#export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk-*.pem`
-#export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
-#export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
+export EC2_HOME=~/.ec2
+export PATH=$PATH:$EC2_HOME/bin
+export EC2_PRIVATE_KEY=$HOME/.ssh/electnext2.pem
+export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk-*.pem`
+export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
+export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
 
 # Source global definitions
 [[ -s "/etc/bashrc" ]] && source "/etc/bashrc"
@@ -96,3 +97,5 @@ unset color_prompt
 
 #export NODE_PATH="/usr/local/lib/node:/Users/mertonium/.npm:/usr/local/share/npm/bin:/usr/local/lib/node_modules:$NODE_PATH";
 #ssh-add ~/.ssh/id_dsa
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
