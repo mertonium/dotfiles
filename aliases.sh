@@ -42,6 +42,7 @@ alias lbstage='ssh ubuntu@dev1.locbox.me -i ~/.ssh/local_dev.pem'
 alias enprod='ssh ec2-user@app-1-external.electnext.com -i ~/.ssh/electnext2.pem'
 alias enstage='ssh ec2-user@staging.electnext.com -i ~/.ssh/electnext2.pem'
 alias enstats='ssh -i ~/.ssh/electnext.pem ec2-user@stats.electnext.com'
+alias enutils='ssh -i ~/.ssh/electnext2.pem ec2-user@utils.electnext.com'
 
 #alias ors='ssh -i ~/.ssh/local_dev.pem root@ec2-204-236-253-28.compute-1.amazonaws.com'
 #alias ors='ssh -i ~/.ssh/local_dev.pem root@ec2-50-16-12-43.compute-1.amazonaws.com'
