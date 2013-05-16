@@ -98,4 +98,10 @@ unset color_prompt
 #export NODE_PATH="/usr/local/lib/node:/Users/mertonium/.npm:/usr/local/share/npm/bin:/usr/local/lib/node_modules:$NODE_PATH";
 #ssh-add ~/.ssh/id_dsa
 
+# Setup IAM Cli
+export AWS_IAM_HOME=~/Code/IAMCli-1.5.0/
+export JAVA_HOME=/usr
+export AWS_CREDENTIAL_FILE=${AWS_IAM_HOME}account-key
+PATH=${AWS_IAM_HOME}bin:$PATH
+
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
