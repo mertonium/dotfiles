@@ -140,3 +140,6 @@ autocmd BufWritePre * :%s/\s\+$//e
 "highlight ExtraTabs ctermbg=red guibg=red
 let ruby_space_errors = 1
 let c_space_errors = 1
+
+" Comma seems more intuitive than the default \
+let mapleader = ","
