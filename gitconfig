@@ -29,6 +29,6 @@
   l1 = log --oneline --decorate
 [core]
   quotepath = false
-	excludesfile = /Users/mertonium/.gitignore_global
+	excludesfile = /Users/jmertens/.gitignore_global
 [push]
   default = tracking

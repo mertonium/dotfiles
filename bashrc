@@ -1,19 +1,14 @@
 export INPUTRC="~/.inputrc"
-export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home"
+export JAVA_HOME=$(/usr/libexec/java_home)
 export PATH="$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:/usr/local/sbin:~/bin"
 export MANPATH="$MANPATH:/opt/local/man:/usr/local/mysql/man"
 export EDITOR=`which vim`
 # Whenever displaying the prompt, write the previous line to disk.
 export PROMPT_COMMAND="history -a"
 export CC="/Applications/Xcode.app/Contents/Developer/usr/bin/gcc"
-
-# Setup Amazon EC2 Command-Line Tools
-export EC2_HOME=~/.ec2
-export PATH=$PATH:$EC2_HOME/bin
-export EC2_PRIVATE_KEY=$HOME/.ssh/electnext2.pem
-export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk-*.pem`
-export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
-export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
+export GOPATH="/Users/jmertens/Code/gocode"
+export GOROOT=''
+export PATH="$PATH:$GOPATH/bin"
 
 # Source global definitions
 [[ -s "/etc/bashrc" ]] && source "/etc/bashrc"
@@ -89,19 +84,44 @@ function parse_git_branch {
 export LSCOLORS='Exfxcxdxbxegedabagacad'
 
 if [ "$color_prompt" = yes ]; then
-  PS1="\[$(tput bold)\]\[$(tput setaf 2)\]\u@\H \[$(tput setaf 4)\]\w\[$(tput setaf 3)\] \$(parse_git_branch)\[$(tput sgr0)\]\n\[$(tput bold)\]\[$(tput setaf 1)\]\$(~/.rvm/bin/rvm-prompt) \[$(tput sgr0)\]> "
+  PS1="\[$(tput bold)\]\[$(tput setaf 2)\]\u \[$(tput setaf 4)\]\w\[$(tput setaf 3)\] \$(parse_git_branch)\[$(tput sgr0)\]\n\[$(tput bold)\]\[$(tput setaf 1)\]\$(rbenv version | sed -e 's/ .*//')\[$(tput sgr0)\]/\[\033[38;5;91m\]\$(nvm current)\[$(tput sgr0)\] > "
 else
   PS1="\u@\H \w \$(parse_git_branch)\n\$(~/.rvm/bin/rvm-prompt) > "
 fi
 unset color_prompt
 
-#export NODE_PATH="/usr/local/lib/node:/Users/mertonium/.npm:/usr/local/share/npm/bin:/usr/local/lib/node_modules:$NODE_PATH";
-#ssh-add ~/.ssh/id_dsa
-
-# Setup IAM Cli
-export AWS_IAM_HOME=~/Code/IAMCli-1.5.0/
-export JAVA_HOME=/usr
-export AWS_CREDENTIAL_FILE=${AWS_IAM_HOME}account-key
-PATH=${AWS_IAM_HOME}bin:$PATH
-
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+function nodes() {
+  cd ~/Code/deploy
+  git pull origin master
+
+  if [ -n "$2" ]; then
+    ORG=$2 bundle exec knife search node role:$1
+  else
+    ORG=$1 bundle exec knife search node 'role:base'
+  fi
+  cd -
+}
+
+
+# Export Salesforce Marketing Cloud keys
+if [ -f ~/.fuelcfg ]; then
+  . ~/.fuelcfg
+  export FUELSDK_CLIENT_SECRET_CHANGE_ORG_INC FUELSDK_CLIENT_SECRET_GLOBAL_TRIGGERED_MESSAGES
+fi
+
+# Export AWS KEYS
+if [ -f ~/.awscfg ]; then
+  . ~/.awscfg
+  export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+fi
+
+PATH="/Users/jmertens/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/Users/jmertens/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/jmertens/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/jmertens/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/jmertens/perl5"; export PERL_MM_OPT;

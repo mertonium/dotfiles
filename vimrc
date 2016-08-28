@@ -1,3 +1,6 @@
+" Use Tpope's pathogem plugin system
+execute pathogen#infect()
+
 " This setting prevents vim from emulating the original vi's bugs and limitations.
 set nocompatible
 
@@ -24,7 +27,7 @@ set showmatch
 set scrolloff=5
 
 " This setting prevents vi from making its annoying beeps when a command doesn't work. Instead, it briefly flashes the screen -- much less annoying.
-" set noerrorbells
+set noerrorbells
 " set vb t_vb=
 
 " Case insensitive matching.
@@ -143,3 +146,6 @@ let c_space_errors = 1
 
 " Comma seems more intuitive than the default \
 let mapleader = ","
+
+" NERDTree stuff
+map <C-n> :NERDTreeToggle<CR>
