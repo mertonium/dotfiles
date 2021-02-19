@@ -255,3 +255,5 @@ nnoremap <leader>sw :setlocal wrap!<cr>
 " Toggle line numbers
 nnoremap <leader>n :set number!<cr>
 
+" Turn off dialyxir to save CPU
+let g:ale_linters_ignore = ['dialyxir']

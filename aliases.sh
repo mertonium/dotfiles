@@ -75,3 +75,4 @@ alias killsvc9='ps aux | egrep "subcontract\s.*(signature_service|petition_servi
 alias ism='iex -S mix'
 alias mcs='mix credo --strict'
 alias mps='mix phx.server'
+alias chc='change containers'

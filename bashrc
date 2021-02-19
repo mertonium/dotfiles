@@ -1,11 +1,11 @@
 export INPUTRC="~/.inputrc"
-export JAVA_HOME=$(/usr/libexec/java_home)
-export PATH="$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:/usr/local/sbin:~/bin"
+# export JAVA_HOME=$(/usr/libexec/java_home)
+export PATH="$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:/usr/local/sbin:~/bin:/Applications/Postgres.app/Contents/Versions/11/bin"
 export MANPATH="$MANPATH:/opt/local/man:/usr/local/mysql/man"
 export EDITOR=`which vim`
 # Whenever displaying the prompt, write the previous line to disk.
 export PROMPT_COMMAND="history -a"
-export CC="/Applications/Xcode.app/Contents/Developer/usr/bin/gcc"
+# export CC="/Applications/Xcode.app/Contents/Developer/usr/bin/gcc"
 export GOPATH="/Users/jmertens/Code/gocode"
 export GOROOT=/usr/local/opt/go/libexec
 export PATH="$PATH:$GOROOT/bin"
@@ -130,13 +130,19 @@ fi
 # Export Github Access token (for graphql test app)
 if [ -f ~/.githubcfg ]; then
   . ~/.githubcfg
-  export GRAPHQL_GH_ACCESS_TOKEN
+  export GRAPHQL_GH_ACCESS_TOKEN2
 fi
 
 # Export Jenkins info
 if [ -f ~/.jenkinscfg ]; then
   . ~/.jenkinscfg
   export CHANGE_USERNAME CHANGE_JENKINS_USER_TOKEN
+fi
+
+# Export jfrog info
+if [ -f ~/.jfrog ]; then
+  . ~/.jfrog
+  export BUNDLE_CHANGE__JFROG__IO
 fi
 
 PATH="/Users/jmertens/perl5/bin${PATH:+:${PATH}}"; export PATH;
@@ -160,7 +166,7 @@ function java_use() {
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 # Initialize asdf
-source /usr/local/opt/asdf/asdf.sh
+# source /usr/local/opt/asdf/asdf.sh
 
 . $HOME/.asdf/asdf.sh
 
@@ -177,3 +183,4 @@ MESSAGE_BUS_DEV_STAGE=dev-jmertens
 # Added by change/development_environment script
 export WORKDIR="/Users/jmertens/Code"
 export PATH="$WORKDIR/development_environment/bin:$PATH"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
