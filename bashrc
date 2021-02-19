@@ -1,19 +1,14 @@
 export INPUTRC="~/.inputrc"
-export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home"
-export PATH="$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:/usr/local/sbin:~/bin"
+# export JAVA_HOME=$(/usr/libexec/java_home)
+export PATH="$PATH:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:/usr/local/sbin:~/bin:/Applications/Postgres.app/Contents/Versions/11/bin"
 export MANPATH="$MANPATH:/opt/local/man:/usr/local/mysql/man"
 export EDITOR=`which vim`
 # Whenever displaying the prompt, write the previous line to disk.
 export PROMPT_COMMAND="history -a"
-export CC="/Applications/Xcode.app/Contents/Developer/usr/bin/gcc"
-
-# Setup Amazon EC2 Command-Line Tools
-export EC2_HOME=~/.ec2
-export PATH=$PATH:$EC2_HOME/bin
-export EC2_PRIVATE_KEY=$HOME/.ssh/electnext2.pem
-export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk-*.pem`
-export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
-export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
+# export CC="/Applications/Xcode.app/Contents/Developer/usr/bin/gcc"
+export GOPATH="/Users/jmertens/Code/gocode"
+export GOROOT=/usr/local/opt/go/libexec
+export PATH="$PATH:$GOROOT/bin"
 
 # Source global definitions
 [[ -s "/etc/bashrc" ]] && source "/etc/bashrc"
@@ -40,7 +35,7 @@ export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
 [[ -s `brew --prefix`/etc/autojump ]] && source `brew --prefix`/etc/autojump
 
 # Init rbenv
-#eval "$(rbenv init -)"
+eval "$(rbenv init -)"
 
 # Don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
@@ -89,19 +84,103 @@ function parse_git_branch {
 export LSCOLORS='Exfxcxdxbxegedabagacad'
 
 if [ "$color_prompt" = yes ]; then
-  PS1="\[$(tput bold)\]\[$(tput setaf 2)\]\u@\H \[$(tput setaf 4)\]\w\[$(tput setaf 3)\] \$(parse_git_branch)\[$(tput sgr0)\]\n\[$(tput bold)\]\[$(tput setaf 1)\]\$(~/.rvm/bin/rvm-prompt) \[$(tput sgr0)\]> "
+  PS1="\[$(tput bold)\]\[$(tput setaf 2)\]\u \[$(tput setaf 4)\]\w\[$(tput setaf 3)\] \$(parse_git_branch)\[$(tput sgr0)\]\n\[$(tput bold)\]\[$(tput setaf 1)\]\$(rbenv version | sed -e 's/ .*//')\[$(tput sgr0)\]/\[\033[38;5;91m\]\$(nvm current)\[$(tput sgr0)\] > "
 else
   PS1="\u@\H \w \$(parse_git_branch)\n\$(~/.rvm/bin/rvm-prompt) > "
 fi
 unset color_prompt
 
-#export NODE_PATH="/usr/local/lib/node:/Users/mertonium/.npm:/usr/local/share/npm/bin:/usr/local/lib/node_modules:$NODE_PATH";
-#ssh-add ~/.ssh/id_dsa
-
-# Setup IAM Cli
-export AWS_IAM_HOME=~/Code/IAMCli-1.5.0/
-export JAVA_HOME=/usr
-export AWS_CREDENTIAL_FILE=${AWS_IAM_HOME}account-key
-PATH=${AWS_IAM_HOME}bin:$PATH
-
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+function nodes() {
+  cd ~/Code/deploy
+  git pull origin master
+
+  if [ -n "$2" ]; then
+    ORG=$2 bundle exec knife search node role:$1
+  else
+    ORG=$1 bundle exec knife search node 'role:base'
+  fi
+  cd -
+}
+
+# Export Salesforce Marketing Cloud keys
+if [ -f ~/.fuelcfg ]; then
+  . ~/.fuelcfg
+  export FUELSDK_ENVIRONMENT
+  export FUELSDK_SFTP_USER
+  export FUELSDK_CLIENT_ID_CHANGE_ORG_INC
+  export FUELSDK_CLIENT_SECRET_CHANGE_ORG_INC
+  export FUELSDK_CLIENT_ID_GLOBAL_TRIGGERED_MESSAGES
+  export FUELSDK_CLIENT_SECRET_GLOBAL_TRIGGERED_MESSAGES
+  export FUELSDK_CLIENT_ID_PETITION_UPDATES
+  export FUELSDK_CLIENT_SECRET_PETITION_UPDATES
+  export FUELSDK_CLIENT_ID_CAMPAIGNS_US
+  export FUELSDK_CLIENT_SECRET_CAMPAIGNS_US
+  export FUELSDK_CLIENT_ID_CAMPAIGNS_ES
+  export FUELSDK_CLIENT_SECRET_CAMPAIGNS_ES
+fi
+
+# Export AWS KEYS
+if [ -f ~/.awscfg ]; then
+  . ~/.awscfg
+  export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+fi
+
+# Export Github Access token (for graphql test app)
+if [ -f ~/.githubcfg ]; then
+  . ~/.githubcfg
+  export GRAPHQL_GH_ACCESS_TOKEN2
+fi
+
+# Export Jenkins info
+if [ -f ~/.jenkinscfg ]; then
+  . ~/.jenkinscfg
+  export CHANGE_USERNAME CHANGE_JENKINS_USER_TOKEN
+fi
+
+# Export jfrog info
+if [ -f ~/.jfrog ]; then
+  . ~/.jfrog
+  export BUNDLE_CHANGE__JFROG__IO
+fi
+
+PATH="/Users/jmertens/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/Users/jmertens/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/jmertens/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/jmertens/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/jmertens/perl5"; export PERL_MM_OPT;
+
+# Unset the deprecated ruby GC vars
+unset RUBY_FREE_MIN
+unset RUBY_HEAP_MIN_SLOTS
+
+
+# Java version of rbenv or nvm
+alias java_ls='/usr/libexec/java_home -V 2>&1 | grep -E "\d.\d.\d_\d\d" | cut -d , -f 1 | colrm 1 4 | grep -v Home'
+function java_use() {
+  export JAVA_HOME=$(/usr/libexec/java_home -v $1)
+  export PATH=$JAVA_HOME/bin:$PATH
+  java -version
+}
+
+export ERL_AFLAGS="-kernel shell_history enabled"
+# Initialize asdf
+# source /usr/local/opt/asdf/asdf.sh
+
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash
+
+MESSAGE_BUS_DEV_STAGE=dev-jmertens
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[ -f /Users/jmertens/.config/yarn/global/node_modules/tabtab/.completions/serverless.bash ] && . /Users/jmertens/.config/yarn/global/node_modules/tabtab/.completions/serverless.bash
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[ -f /Users/jmertens/.config/yarn/global/node_modules/tabtab/.completions/sls.bash ] && . /Users/jmertens/.config/yarn/global/node_modules/tabtab/.completions/sls.bash
+# Added by change/development_environment script
+export WORKDIR="/Users/jmertens/Code"
+export PATH="$WORKDIR/development_environment/bin:$PATH"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
